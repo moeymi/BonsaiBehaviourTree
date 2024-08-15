@@ -23,7 +23,7 @@ namespace Bonsai.Core
     // allNodes must always be kept in pre-order.
     [SerializeField, HideInInspector]
 #pragma warning disable IDE0044 // Add readonly modifier
-    private BehaviourNode[] allNodes = { };
+    protected BehaviourNode[] allNodes = { };
 #pragma warning restore IDE0044 // Add readonly modifier
 
     /// <summary>
@@ -325,25 +325,25 @@ namespace Bonsai.Core
     /// </summary>
     /// <param name="sourceTree">The source tree to clone.</param>
     /// <returns>The cloned tree.</returns>
-    public static BehaviourTree Clone(BehaviourTree sourceTree)
+    public BehaviourTree Clone()
     {
       // The tree clone will be blank to start. We will duplicate blackboard and nodes.
       var cloneBt = CreateInstance<BehaviourTree>();
-      cloneBt.name = sourceTree.name;
+      cloneBt.name = this.name;
 
-      if (sourceTree.blackboard)
+      if (this.blackboard)
       {
-        cloneBt.blackboard = Instantiate(sourceTree.blackboard);
+        cloneBt.blackboard = Instantiate(this.blackboard);
       }
 
       // Source tree nodes should already be in pre-order.
-      cloneBt.SetNodes(sourceTree.Nodes.Select(n => Instantiate(n)));
+      cloneBt.SetNodes(this.Nodes.Select(n => Instantiate(n)));
 
       // Relink children and parents for the cloned nodes.
       int maxCloneNodeCount = cloneBt.allNodes.Length;
       for (int i = 0; i < maxCloneNodeCount; ++i)
       {
-        BehaviourNode nodeSource = sourceTree.allNodes[i];
+        BehaviourNode nodeSource = this.allNodes[i];
         BehaviourNode copyNode = GetInstanceVersion(cloneBt, nodeSource);
 
         if (copyNode.IsComposite())

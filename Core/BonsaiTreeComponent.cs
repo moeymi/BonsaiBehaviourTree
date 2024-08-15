@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Bonsai.Core
 {
-  public class BonsaiTreeComponent : MonoBehaviour
+  public class BonsaiTreeComponent : MonoBehaviour, ITreeHolder
   {
     /// <summary>
     /// The tree blueprint asset used.
@@ -19,7 +19,7 @@ namespace Bonsai.Core
     {
       if (TreeBlueprint)
       {
-        treeInstance = BehaviourTree.Clone(TreeBlueprint);
+        treeInstance = TreeBlueprint.Clone();
         treeInstance.actor = gameObject;
       }
       else
@@ -43,13 +43,10 @@ namespace Bonsai.Core
     {
       Destroy(treeInstance);
     }
-
-    /// <summary>
-    /// The tree instance running in game.
-    /// </summary>
-    public BehaviourTree Tree
+    
+    public BehaviourTree GetTree()
     {
-      get { return treeInstance; }
+      return treeInstance;
     }
   }
 }

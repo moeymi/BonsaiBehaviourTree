@@ -19,7 +19,7 @@ namespace Tests
       root.SetChildren(new[] { alpha, beta, delta });
       tree.SetNodes(root);
 
-      BehaviourTree cloneTree = BehaviourTree.Clone(tree);
+      BehaviourTree cloneTree = tree.Clone();
       Assert.AreEqual(4, cloneTree.Nodes.Length);
 
       Assert.AreEqual(0, cloneTree.Nodes[0].PreOrderIndex);
